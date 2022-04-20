@@ -589,32 +589,28 @@ Image* Image::create(EImageColorModel colorSpace, unsigned int width, unsigned i
 
 unsigned int Image::getDownsampleFilterKernelSize(EResizeQuality quality)
 {
-	if( quality == kResizeQuality_Bilinear ) {
+	if( quality <= kResizeQuality_Bilinear ) {
 		return 2;
-	} else if( quality == kResizeQuality_Low ) {
+	} else if( quality <= kResizeQuality_Low ) {
 		return 4;
-	} else if( quality == kResizeQuality_Medium ) {
+	} else if( quality <= kResizeQuality_Medium ) {
 		return 8;
-	} else if( quality == kResizeQuality_High || quality == kResizeQuality_HighSharp ) {
+	} else // kResizeQuality_High, kResizeQuality_HighSharp, kResizeQuality_MAX+
 		return 12;
 	}
-	ASSERT(0);
-	return 0;
 }
 
 EFilterType Image::getDownsampleFilterKernelType(EResizeQuality quality)
 {
-	if (quality == kResizeQuality_Bilinear) {
+	if (quality <= kResizeQuality_Bilinear) {
 		return kFilterType_Linear;
-	} else if( quality == kResizeQuality_Low ) {
+	} else if( quality <= kResizeQuality_Low ) {
 		return kFilterType_Kaiser;
-	} else if( quality == kResizeQuality_Medium || quality == kResizeQuality_High ) {
+	} else if( quality <= kResizeQuality_Medium || quality <= kResizeQuality_High ) {
 		return kFilterType_Lanczos;
-	} else if( quality == kResizeQuality_HighSharp ) {
+	} else // kResizeQuality_HighSharp, kResizeQuality_MAX+
 		return kFilterType_LanczosSharper;
 	}
-	ASSERT(0);
-	return kFilterType_Lanczos;
 }
 
 unsigned int Image::getUpsampleFilterKernelSize(EResizeQuality quality)
@@ -624,17 +620,15 @@ unsigned int Image::getUpsampleFilterKernelSize(EResizeQuality quality)
 
 EFilterType Image::getUpsampleFilterKernelType(EResizeQuality quality)
 {
-	if( quality == kResizeQuality_Low ) {
+	if( quality <= kResizeQuality_Low ) {
 		return kFilterType_MitchellNetravali;
-	} else if( quality == kResizeQuality_Medium ) {
+	} else if( quality <= kResizeQuality_Medium ) {
 		return kFilterType_MitchellNetravali;
-	} else if( quality == kResizeQuality_High ) {
+	} else if( quality <= kResizeQuality_High ) {
 		return kFilterType_Lanczos;
-	} else if( quality == kResizeQuality_HighSharp ) {
+	} else // kResizeQuality_HighSharp, kResizeQuality_MAX+
 		return kFilterType_LanczosSharper;
 	}
-	ASSERT(0);
-	return kFilterType_MitchellNetravali;
 }
 
 bool Image::validateSize(unsigned int width, unsigned int height)
